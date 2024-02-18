@@ -28,10 +28,6 @@ public class FilmController {
 
     @GetMapping
     public List getAllFilms() {
-        if (films.values().isEmpty()) {
-            log.error("Нет фильмов");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
         return new ArrayList(films.values());
     }
 
