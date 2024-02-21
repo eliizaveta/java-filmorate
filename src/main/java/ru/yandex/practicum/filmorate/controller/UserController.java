@@ -67,9 +67,9 @@ public class UserController {
         return userService.getListUser(id);
     }
 
-    @GetMapping("/users/{id}/friends/common/{friendId}")
-    public List<User> getMutualFriends(@PathVariable Integer id, @PathVariable Integer friendId) {
-        log.info("Запросим список общих друзей между пользователем c id " + id + " и пользователем с id " + friendId);
-        return userService.getMutualFriends(id, friendId);
+    @GetMapping("/users/{id}/friends/common/{otherId}")
+    public List<User> getMutualFriends(@PathVariable Integer id, @PathVariable Integer otherId) {
+        log.info("Запросим список общих друзей между пользователем c id " + id + " и пользователем с id " + otherId);
+        return userService.getMutualFriends(id, otherId);
     }
 }
