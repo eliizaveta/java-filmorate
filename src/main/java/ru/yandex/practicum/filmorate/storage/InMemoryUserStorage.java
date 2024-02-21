@@ -40,6 +40,11 @@ public class InMemoryUserStorage implements UserStorage {
         if (!users.containsKey(user.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя, чтобы изменить");
         }
+        if (users.get(user.getId()).getFriends() != null) {
+            user.setFriends(users.get(user.getId()).getFriends());
+        } else {
+            user.setFriends(new HashSet<>());
+        }
         users.put(user.getId(), user);
         return user;
     }

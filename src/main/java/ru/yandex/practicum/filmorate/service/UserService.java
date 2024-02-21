@@ -1,10 +1,13 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,10 +21,11 @@ public class UserService {
     }
 
     public void addFriend(int id, int friendId) {
-        if (!userStorage.getUserById(id).getFriends().contains(friendId)) {
-            userStorage.getUserById(id).getFriends().add(friendId);
-            userStorage.getUserById(friendId).getFriends().add(id);
+        if (friendId < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
         }
+        userStorage.getUserById(id).getFriends().add(friendId);
+        userStorage.getUserById(friendId).getFriends().add(id);
     }
 
     public void deleteFriend(int id, int friendId) {
@@ -47,8 +51,15 @@ public class UserService {
         User friend = userStorage.getUserById(friendId);
         Set<Integer> userFriends = user.getFriends();
         Set<Integer> friendFriends = friend.getFriends();
-        userFriends.retainAll(friendFriends);
-        return userFriends.stream()
+        Set<Integer> result = new HashSet<>();
+        for (int u : userFriends) {
+            for (int f : friendFriends) {
+                if (u == f) {
+                    result.add(u);
+                }
+            }
+        }
+        return result.stream()
                 .map(userStorage::getUserById)
                 .collect(Collectors.toList());
     }

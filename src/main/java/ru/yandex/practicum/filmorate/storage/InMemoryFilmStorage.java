@@ -45,6 +45,11 @@ public class InMemoryFilmStorage implements FilmStorage {
             if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
                 throw new ValidationException("Вы указали неверную дату. Фильм не может быть старше 1895.12.28");
             } else {
+                if (films.get(film.getId()).getLikes() != null) {
+                    film.setLikes(films.get(film.getId()).getLikes());
+                } else {
+                    film.setLikes(new HashSet<>());
+                }
                 films.put(film.getId(), film);
             }
         } else {
