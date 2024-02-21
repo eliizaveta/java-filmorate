@@ -32,4 +32,8 @@ public class User {
     private LocalDate birthday;
 
     private Set<Integer> friends;
+
+    public Set<Integer> getFriends() {
+        return friends;
+    }
 }

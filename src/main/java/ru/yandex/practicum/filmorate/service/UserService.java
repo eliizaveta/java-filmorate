@@ -72,13 +72,13 @@ public class UserService {
                 if (user.getFriends().isEmpty()) {
                     throw new ResponseStatusException(HttpStatus.NOT_FOUND, "У пользователя нет друзей");
                 }
+                return user.getFriends()
+                        .stream()
+                        .map(u -> userStorage.getUserId(u))
+                        .collect(Collectors.toList());
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "У пользователя не было друзей");
             }
-            return user.getFriends()
-                    .stream()
-                    .map(u -> userStorage.getUserId(u))
-                    .collect(Collectors.toList());
         }
         return Collections.emptyList();
     }
@@ -87,8 +87,8 @@ public class UserService {
         User user = userStorage.getUserId(id);
         User friend = userStorage.getUserId(friendId);
         Set<Integer> userFriends = user.getFriends();
-        if (user.getFriends() == null) {
-            userFriends = new HashSet<>();
+        if (userFriends == null) {
+            return Collections.emptyList();
         }
         Set<Integer> friendFriends = friend.getFriends();
         if (friendFriends == null) {
