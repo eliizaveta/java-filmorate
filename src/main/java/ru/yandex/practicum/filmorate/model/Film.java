@@ -15,7 +15,6 @@ import java.util.Set;
 @Builder
 public class Film {
 
-    @PositiveOrZero
     private int id;
 
     @NotBlank

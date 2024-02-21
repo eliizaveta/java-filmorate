@@ -8,7 +8,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +16,6 @@ import java.util.Set;
 @Builder
 public class User {
 
-    @PositiveOrZero
     private int id;
 
     @Email

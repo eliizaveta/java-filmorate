@@ -33,7 +33,7 @@ public class FilmController {
     }
 
     @GetMapping("/films/{id}")
-    public Film getFilmId(@Valid @PathVariable Integer id) {
+    public Film getFilmId(@PathVariable Integer id) {
         log.info("Получим фильм по id " + id);
         return filmService.filmStorage.getFilmById(id);
     }
@@ -51,13 +51,13 @@ public class FilmController {
     }
 
     @PutMapping("/films/{id}/like/{userId}")
-    public void likeFilm(@Valid @PathVariable Integer id, @Valid @PathVariable Integer userId) {
+    public void likeFilm(@PathVariable Integer id, @PathVariable Integer userId) {
         log.info("Поставим лайк фильму с id " + id + " пользователем c id " + userId);
         filmService.likeFilm(id, userId);
     }
 
     @DeleteMapping("/films/{id}/like/{userId}")
-    public void deleteLikeFilm(@Valid @PathVariable Integer id, @Valid @PathVariable Integer userId) {
+    public void deleteLikeFilm(@PathVariable Integer id, @PathVariable Integer userId) {
         log.info("Удалим лайк фильму с id " + id + " пользователем c id " + userId);
         filmService.deleteLikeFilm(id, userId);
     }

@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public User getUserId(@Valid @PathVariable Integer id) {
+    public User getUserId(@PathVariable Integer id) {
         log.info("Получим инфо о пользователе с id " + id);
         return userService.userStorage.getUserById(id);
     }
@@ -50,25 +50,25 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
-    public void addFriend(@Valid @PathVariable Integer id, @Valid @PathVariable Integer friendId) {
+    public void addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
         log.info("Добавим в друзья пользователем c id " + id + " пользователя с id " + friendId);
         userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/users/{id}/friends/{friendId}")
-    public void deleteFriend(@Valid @PathVariable Integer id, @Valid @PathVariable Integer friendId) {
+    public void deleteFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
         log.info("Удалим из друзей пользователем c id " + id + " пользователя с id " + friendId);
         userService.deleteFriend(id, friendId);
     }
 
     @GetMapping("/users/{id}/friends")
-    public List<User> getListUser(@Valid @PathVariable Integer id) {
+    public List<User> getListUser(@PathVariable Integer id) {
         log.info("Получим список друзей пользователя " + id);
         return userService.getListUser(id);
     }
 
     @GetMapping("/users/{id}/friends/common/{otherId}")
-    public List<User> getMutualFriends(@Valid @PathVariable Integer id, @Valid @PathVariable Integer otherId) {
+    public List<User> getMutualFriends(@PathVariable Integer id, @PathVariable Integer otherId) {
         log.info("Запросим список общих друзей между пользователем c id " + id + " и пользователем с id " + otherId);
         return userService.getMutualFriends(id, otherId);
     }

@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class InMemoryUserStorage implements UserStorage {
     private final HashMap<Integer, User> users = new HashMap<>();
-    private static int nextUserId = 0;
+    private static int nextUserId = 1;
 
     private static void incrementId() {
         nextUserId += 1;
