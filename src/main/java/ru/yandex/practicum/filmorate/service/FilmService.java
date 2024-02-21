@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
@@ -17,11 +19,17 @@ public class FilmService {
     }
 
     public void likeFilm(int id, int userId) {
+        if (userId < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
+        }
         Film film = filmStorage.getFilmById(id);
         film.getLikes().add(userId);
     }
 
     public void deleteLikeFilm(int id, int userId) {
+        if (userId < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
+        }
         Film film = filmStorage.getFilmById(id);
         film.getLikes().remove(userId);
     }

@@ -56,7 +56,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film getFilmById(int id) {
         if (id < 0) {
-            throw new ValidationException("Отрицательный id");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
         }
         if (!films.containsKey(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли фильм по id");

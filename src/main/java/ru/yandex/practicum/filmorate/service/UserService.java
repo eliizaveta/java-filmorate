@@ -18,8 +18,10 @@ public class UserService {
     }
 
     public void addFriend(int id, int friendId) {
-        userStorage.getUserById(id).getFriends().add(friendId);
-        userStorage.getUserById(friendId).getFriends().add(id);
+        if (!userStorage.getUserById(id).getFriends().contains(friendId)) {
+            userStorage.getUserById(id).getFriends().add(friendId);
+            userStorage.getUserById(friendId).getFriends().add(id);
+        }
     }
 
     public void deleteFriend(int id, int friendId) {

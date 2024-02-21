@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,7 +46,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     public User getUserById(int id) {
         if (id < 0) {
-            throw new ValidationException("Отрицательный id");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
         }
         if (!users.containsKey(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
