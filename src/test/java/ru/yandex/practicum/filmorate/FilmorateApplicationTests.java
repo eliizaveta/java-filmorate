@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -134,6 +135,6 @@ class FilmorateApplicationTests {
 		).andExpect(status().isOk());
 		mockMvc.perform(
 				get("/users/1/friends/")
-		).andExpect(status().isOk());
+		).andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
 }

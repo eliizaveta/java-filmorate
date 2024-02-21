@@ -13,8 +13,12 @@ import java.util.List;
 @Slf4j
 @Component
 public class InMemoryUserStorage implements UserStorage {
-    private final HashMap<Integer, User> users = new HashMap<>();
-    private int nextUserId = 1;
+    private static final HashMap<Integer, User> users = new HashMap<>();
+    private static int nextUserId = 1;
+
+    private static void incrementId() {
+        nextUserId += 1;
+    }
 
     public List getAllUsers() { // получение списка всех пользователей.
         return new ArrayList<>(users.values());
@@ -24,7 +28,8 @@ public class InMemoryUserStorage implements UserStorage {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
-        user.setId(nextUserId++);
+        user.setId(nextUserId);
+        incrementId();
         users.put(user.getId(), user);
         return user;
     }

@@ -13,8 +13,12 @@ import java.util.List;
 
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
-    private HashMap<Integer, Film> films = new HashMap<>();
-    private int nextFilmId = 1;
+    private static HashMap<Integer, Film> films = new HashMap<>();
+    private static int nextFilmId = 1;
+
+    private static void incrementId() {
+        nextFilmId += 1;
+    }
 
     @Override
     public List<Film> getAllFilms() { // получение списка всех фильмов
@@ -26,7 +30,8 @@ public class InMemoryFilmStorage implements FilmStorage {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             throw new ValidationException("Вы указали неверную дату. Фильм не может быть старше 1895.12.28");
         } else {
-            film.setId(nextFilmId++);
+            film.setId(nextFilmId);
+            incrementId();
             films.put(film.getId(), film);
         }
         return film;
