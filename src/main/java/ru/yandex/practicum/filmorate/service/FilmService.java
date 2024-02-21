@@ -30,10 +30,9 @@ public class FilmService {
     public void deleteLikeFilm(int id, int userId) {
         Film film = filmStorage.getFilmById(id);
         Set<Integer> filmLikes = film.getLikes();
-        if (filmLikes == null) {
-            filmLikes = new HashSet<>();
+        if (filmLikes != null) {
+            filmLikes.remove(userId);
         }
-        filmLikes.remove(userId);
     }
 
     public List<Film> getPopularFilms(Integer count) {

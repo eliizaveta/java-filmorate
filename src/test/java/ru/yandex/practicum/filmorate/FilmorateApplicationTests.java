@@ -103,4 +103,37 @@ class FilmorateApplicationTests {
 				get("/users/1/friends/common/2")
 		).andExpect(status().isOk());
 	}
+
+	@Test
+	void testGetFriend() throws Exception {
+		mockMvc.perform(
+				post("/users")
+						.content("{\n" +
+								"  \"login\": \"lizand\",\n" +
+								"  \"name\": \"Lisa\",\n" +
+								"  \"email\": \"mail@gmail.com\",\n" +
+								"  \"birthday\": \"2000-09-04\"\n" +
+								"}")
+						.contentType(MediaType.APPLICATION_JSON)
+		).andExpect(status().isOk());
+		mockMvc.perform(
+				post("/users")
+						.content("{\n" +
+								"  \"login\": \"lizand2\",\n" +
+								"  \"name\": \"Lisa\",\n" +
+								"  \"email\": \"mail@gmail.com\",\n" +
+								"  \"birthday\": \"2000-09-04\"\n" +
+								"}")
+						.contentType(MediaType.APPLICATION_JSON)
+		).andExpect(status().isOk());
+		mockMvc.perform(
+				get("/users/1/friends/")
+		).andExpect(status().isOk());
+		mockMvc.perform(
+				put("/users/1/friends/2")
+		).andExpect(status().isOk());
+		mockMvc.perform(
+				get("/users/1/friends/")
+		).andExpect(status().isOk());
+	}
 }

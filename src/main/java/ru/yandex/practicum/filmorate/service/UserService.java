@@ -69,15 +69,10 @@ public class UserService {
         User user = userStorage.getUserId(id);
         if (user != null) {
             if (user.getFriends() != null) {
-                if (user.getFriends().isEmpty()) {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "У пользователя нет друзей");
-                }
                 return user.getFriends()
                         .stream()
                         .map(u -> userStorage.getUserId(u))
                         .collect(Collectors.toList());
-            } else {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "У пользователя не было друзей");
             }
         }
         return Collections.emptyList();
