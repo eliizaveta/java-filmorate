@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/users/{id}")
     public User getUserId(@PathVariable Integer id) {
         log.info("Получим инфо о пользователе с id " + id);
-        return userService.userStorage.getUserId(id);
+        return userService.userStorage.getUserById(id);
     }
 
     @PostMapping("/users")

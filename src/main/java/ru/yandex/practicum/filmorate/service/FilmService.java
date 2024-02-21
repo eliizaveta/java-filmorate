@@ -5,14 +5,12 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import javax.validation.ValidationException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
-    public FilmStorage filmStorage;
+    public final FilmStorage filmStorage;
 
     public FilmService(FilmStorage filmStorage) {
         this.filmStorage = filmStorage;
@@ -20,19 +18,12 @@ public class FilmService {
 
     public void likeFilm(int id, int userId) {
         Film film = filmStorage.getFilmById(id);
-        Set<Integer> filmLikes = film.getLikes();
-        if (filmLikes == null) {
-            filmLikes = new HashSet<>();
-        }
-        filmLikes.add(userId);
+        film.getLikes().add(userId);
     }
 
     public void deleteLikeFilm(int id, int userId) {
         Film film = filmStorage.getFilmById(id);
-        Set<Integer> filmLikes = film.getLikes();
-        if (filmLikes != null) {
-            filmLikes.remove(userId);
-        }
+        film.getLikes().remove(userId);
     }
 
     public List<Film> getPopularFilms(Integer count) {
