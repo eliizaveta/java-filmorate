@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Component
 public class InMemoryUserStorage implements UserStorage {
     private final HashMap<Integer, User> users = new HashMap<>();
@@ -29,7 +31,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     public User changeUser(User user) {
         if (!users.containsKey(user.getId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя, чтобы изменить");
         }
         users.put(user.getId(), user);
         return user;
@@ -37,7 +39,7 @@ public class InMemoryUserStorage implements UserStorage {
 
     public User getUserId(int id) {
         if (!users.containsKey(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
         }
         return users.get(id);
     }

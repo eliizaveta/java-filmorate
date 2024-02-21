@@ -22,9 +22,9 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film addFilm(Film film) throws ValidationException { // создание фильма.
+    public Film addFilm(Film film) throws ValidationException {
         if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            throw new ValidationException("вы указали неверную дату. фильм не может быть старше 1895.12.28");
+            throw new ValidationException("Вы указали неверную дату. Фильм не может быть старше 1895.12.28");
         } else {
             film.setId(nextFilmId++);
             films.put(film.getId(), film);
@@ -33,23 +33,23 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Film changeFilm(Film film) throws ValidationException { // обновление фильма.
+    public Film changeFilm(Film film) throws ValidationException {
         if (films.containsKey(film.getId())) {
             if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-                throw new ValidationException("вы указали неверную дату. фильм не может быть старше 1895.12.28");
+                throw new ValidationException("Вы указали неверную дату. Фильм не может быть старше 1895.12.28");
             } else {
                 films.put(film.getId(), film);
             }
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли фильм, чтобы изменить");
         }
         return film;
     }
 
     @Override
-    public Film getFilmById(int id) { //вернуть фильм по id
+    public Film getFilmById(int id) {
         if (!films.containsKey(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли фильм по id");
         }
         return films.get(id);
     }
