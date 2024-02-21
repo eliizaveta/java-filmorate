@@ -19,10 +19,12 @@ public class UserService {
 
     public void addFriend(int id, int friendId) {
         userStorage.getUserById(id).getFriends().add(friendId);
+        userStorage.getUserById(friendId).getFriends().add(id);
     }
 
     public void deleteFriend(int id, int friendId) {
         userStorage.getUserById(id).getFriends().remove(friendId);
+        userStorage.getUserById(friendId).getFriends().remove(id);
     }
 
     public List<User> getListUser(int id) {

@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
     private static HashMap<Integer, Film> films = new HashMap<>();
-    private static int nextFilmId = 1;
+    private static int nextFilmId = 0;
 
     private static void incrementId() {
         nextFilmId += 1;
@@ -53,6 +53,9 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film getFilmById(int id) {
+        if (id < 0) {
+            throw new ValidationException("Отрицательный id");
+        }
         if (!films.containsKey(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли фильм по id");
         }
