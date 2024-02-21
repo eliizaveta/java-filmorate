@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import javax.validation.ValidationException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Slf4j
@@ -30,6 +31,7 @@ public class InMemoryUserStorage implements UserStorage {
             user.setName(user.getLogin());
         }
         user.setId(nextUserId);
+        user.setFriends(new HashSet<>());
         incrementId();
         users.put(user.getId(), user);
         return user;

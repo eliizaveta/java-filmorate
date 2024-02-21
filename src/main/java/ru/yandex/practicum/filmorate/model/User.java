@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -32,9 +31,5 @@ public class User {
     @NotNull
     private LocalDate birthday;
 
-    private static Set<Integer> friends = new HashSet<>();
-
-    public Set<Integer> getFriends() {
-        return friends;
-    }
+    private Set<Integer> friends;
 }

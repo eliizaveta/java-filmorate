@@ -9,6 +9,7 @@ import javax.validation.ValidationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -31,6 +32,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new ValidationException("Вы указали неверную дату. Фильм не может быть старше 1895.12.28");
         } else {
             film.setId(nextFilmId);
+            film.setLikes(new HashSet<>());
             incrementId();
             films.put(film.getId(), film);
         }
