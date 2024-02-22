@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-@Repository
+@Component
 public class InMemoryFilmStorage implements FilmStorage {
     private static HashMap<Integer, Film> films = new HashMap<>();
     private static int nextFilmId = 1;
