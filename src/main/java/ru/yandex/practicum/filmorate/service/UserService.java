@@ -7,9 +7,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,19 +45,8 @@ public class UserService {
     }
 
     public List<User> getMutualFriends(int id, int friendId) {
-        User user = userStorage.getUserById(id);
-        User friend = userStorage.getUserById(friendId);
-        Set<Integer> userFriends = user.getFriends();
-        Set<Integer> friendFriends = friend.getFriends();
-        Set<Integer> result = new HashSet<>();
-        for (int u : userFriends) {
-            for (int f : friendFriends) {
-                if (u == f) {
-                    result.add(u);
-                }
-            }
-        }
-        return result.stream()
+        return userStorage.getUserById(id).getFriends().stream()
+                .filter(userStorage.getUserById(friendId).getFriends()::contains)
                 .map(userStorage::getUserById)
                 .collect(Collectors.toList());
     }
