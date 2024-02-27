@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
+import ru.yandex.practicum.filmorate.storage.dao.FriendListDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +14,43 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     public final UserStorage userStorage;
+    public FriendListDao friendListDao;
 
-    public UserService(UserStorage userStorage) {
+    public UserService(UserStorage userStorage, FriendListDao friendListDao) {
         this.userStorage = userStorage;
+        this.friendListDao = friendListDao;
+    }
+
+    public List<User> getAllUsers() {
+        return userStorage.getAllUsers();
+    }
+
+    public User getUserById(int id) {
+        return userStorage.getUserById(id);
+    }
+
+    public User addUser(User user) {
+        return userStorage.addUser(user);
+    }
+
+    public User changeUser(User user) {
+        userStorage.userExistenceCheck(user.getId());
+        if (user.getFriends() != null) {
+            for (int friendId : user.getFriends()) {
+                boolean status = userStorage.getUserById(friendId).getFriends().contains(user.getId());
+                friendListDao.addFriends(user.getId(), friendId, status);
+            }
+        }
+        return userStorage.changeUser(user);
     }
 
     public void addFriend(int id, int friendId) {
         if (friendId < 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
         }
-        userStorage.getUserById(id).getFriends().add(friendId);
-        userStorage.getUserById(friendId).getFriends().add(id);
+        userStorage.userExistenceCheck(id);
+        boolean status = userStorage.getUserById(friendId).getFriends().contains(id);
+        friendListDao.addFriends(id, friendId, status);
     }
 
     public void deleteFriend(int id, int friendId) {

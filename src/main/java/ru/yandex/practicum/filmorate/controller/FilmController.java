@@ -27,25 +27,25 @@ public class FilmController {
     @GetMapping("/films")
     public List getAllFilms() {
         log.info("Получим список всех фильмов");
-        return filmService.filmStorage.getAllFilms();
+        return filmService.getAllFilms();
     }
 
     @GetMapping("/films/{id}")
     public Film getFilmId(@PathVariable Integer id) {
         log.info("Получим фильм по id " + id);
-        return filmService.filmStorage.getFilmById(id);
+        return filmService.getFilmById(id);
     }
 
     @PostMapping("/films")
     public Film addFilm(@Valid @RequestBody Film film) {
         log.info("Добавим новый фильм");
-        return filmService.filmStorage.addFilm(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping("/films")
     public Film changeFilm(@Valid @RequestBody Film film) {
         log.info("Изменим информацию про фильм " + film);
-        return filmService.filmStorage.changeFilm(film);
+        return filmService.changeFilm(film);
     }
 
     @PutMapping("/films/{id}/like/{userId}")
