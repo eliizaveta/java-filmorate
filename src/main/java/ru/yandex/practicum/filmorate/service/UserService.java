@@ -54,14 +54,12 @@ public class UserService {
     }
 
     public void deleteFriend(int id, int friendId) {
-        userStorage.getUserById(id).getFriends().remove(friendId);
-        userStorage.getUserById(friendId).getFriends().remove(id);
+        friendListDao.deleteFriends(id, friendId);
     }
 
     public List<User> getListUser(int id) {
-        User user = userStorage.getUserById(id);
         List<User> friends = new ArrayList<>();
-        for (int friendId : user.getFriends()) {
+        for (int friendId : friendListDao.checkFriend(id)) {
             for (User u : userStorage.getAllUsers()) {
                 if (u.getId() == friendId) {
                     friends.add(u);
