@@ -70,8 +70,8 @@ public class UserService {
     }
 
     public List<User> getMutualFriends(int id, int friendId) {
-        return userStorage.getUserById(id).getFriends().stream()
-                .filter(userStorage.getUserById(friendId).getFriends()::contains)
+        return friendListDao.checkFriend(id).stream()
+                .filter(friendListDao.checkFriend(friendId)::contains)
                 .map(userStorage::getUserById)
                 .collect(Collectors.toList());
     }
