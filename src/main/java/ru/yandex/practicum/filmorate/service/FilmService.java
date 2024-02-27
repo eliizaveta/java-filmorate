@@ -5,23 +5,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.dao.GenreDao;
 import ru.yandex.practicum.filmorate.storage.dao.LikeDao;
 import ru.yandex.practicum.filmorate.storage.dao.MpaDao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
     public final FilmStorage filmStorage;
-    private final GenreDao genreDao;
     private final LikeDao likeDao;
     private final MpaDao mpaDao;
 
-    public FilmService(FilmStorage filmStorage, GenreDao genreDao, LikeDao likeDao, MpaDao mpaDao) {
+    public FilmService(FilmStorage filmStorage, LikeDao likeDao, MpaDao mpaDao) {
         this.filmStorage = filmStorage;
-        this.genreDao = genreDao;
         this.likeDao = likeDao;
         this.mpaDao = mpaDao;
     }
@@ -62,8 +60,6 @@ public class FilmService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
         }
         likeDao.addLike(id, userId);
-//        Film film = filmStorage.getFilmById(id);
-//        film.getLikes().add(userId);
     }
 
     public void deleteLikeFilm(int id, int userId) {
@@ -71,16 +67,19 @@ public class FilmService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Не нашли пользователя по id");
         }
         likeDao.deleteLike(id, userId);
-//        Film film = filmStorage.getFilmById(id);
-//        film.getLikes().remove(userId);
     }
 
     public List<Film> getPopularFilms(Integer count) {
-        //todo
-        return filmStorage.getAllFilms()
-                .stream()
-                .sorted((x, y) -> y.getLikes().size() - x.getLikes().size())
-                .limit(count)
-                .collect(Collectors.toList());
+        List<Integer> filmsId = likeDao.sizeLikeFilmList(count);
+        List<Film> popularFilmList = new ArrayList<>();
+        if (filmsId.isEmpty()) {
+            return getAllFilms().stream().sorted((x, y) -> y.getLikes().size() - x.getLikes().size())
+                    .limit(count).collect(Collectors.toList());
+        } else {
+            for (int filmId : filmsId) {
+                popularFilmList.add(filmStorage.getFilmById(filmId));
+            }
+        }
+        return popularFilmList;
     }
 }

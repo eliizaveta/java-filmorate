@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,10 +26,8 @@ import static java.lang.String.format;
 public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public FilmDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-
     }
 
     @Override
@@ -51,7 +48,11 @@ public class FilmDbStorage implements FilmStorage {
                                 + "AND release_date='%s' "
                                 + "AND duration= %d "
                                 + "AND rating_id=%d",
-                        film.getName(), film.getDescription(), film.getReleaseDate(), film.getDuration(), film.getMpa().getId()),
+                        film.getName(),
+                        film.getDescription(),
+                        film.getReleaseDate(),
+                        film.getDuration(),
+                        film.getMpa().getId()),
                 new FilmMapper());
     }
 

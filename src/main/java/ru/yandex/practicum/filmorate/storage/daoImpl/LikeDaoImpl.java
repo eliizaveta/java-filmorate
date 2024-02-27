@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.daoImpl;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.storage.dao.LikeDao;
 
-import javax.validation.ValidationException;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -20,7 +18,6 @@ import static java.lang.String.format;
 public class LikeDaoImpl implements LikeDao {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public LikeDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -29,8 +26,7 @@ public class LikeDaoImpl implements LikeDao {
     public void addLike(int filmId, int userId) {
         try {
             jdbcTemplate.update("INSERT INTO film_like_list (film_id, user_id)VALUES (?, ?)", filmId, userId);
-        } catch (
-                EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
@@ -38,10 +34,9 @@ public class LikeDaoImpl implements LikeDao {
     @Override
     public void deleteLike(int filmId, int userId) {
         try {
-            jdbcTemplate.queryForObject(format(
-                    "SELECT film_id + user_id FROM film_like_list WHERE film_id=%d AND user_id=%d", filmId, userId), Integer.class);
-        } catch (
-                EmptyResultDataAccessException e) {
+            jdbcTemplate.queryForObject(format("SELECT film_id + user_id FROM film_like_list " +
+                    "WHERE film_id=%d AND user_id=%d", filmId, userId), Integer.class);
+        } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         jdbcTemplate.update("DELETE FROM film_like_list WHERE film_id=? AND user_id=?", filmId, userId);
@@ -49,10 +44,8 @@ public class LikeDaoImpl implements LikeDao {
 
     @Override
     public List<Integer> sizeLikeFilmList(int count) {
-        if (count < 1) {
-            throw new ValidationException("слишком малое число. count должен быть хотябы 1 а не " + count);
-        }
         return jdbcTemplate.queryForList(format("SELECT film_id FROM (SELECT film_id, COUNT(user_id) as count_users " +
-                "FROM film_like_list GROUP BY film_id) as subquery ORDER BY count_users DESC LIMIT %d", count), Integer.class);
+                "FROM film_like_list GROUP BY film_id) as subquery " +
+                "ORDER BY count_users DESC LIMIT %d", count), Integer.class);
     }
 }

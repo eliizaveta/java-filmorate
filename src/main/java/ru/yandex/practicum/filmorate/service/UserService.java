@@ -59,7 +59,7 @@ public class UserService {
 
     public List<User> getListUser(int id) {
         List<User> friends = new ArrayList<>();
-        for (int friendId : friendListDao.checkFriend(id)) {
+        for (int friendId : friendListDao.getFriends(id)) {
             for (User u : userStorage.getAllUsers()) {
                 if (u.getId() == friendId) {
                     friends.add(u);
@@ -70,8 +70,8 @@ public class UserService {
     }
 
     public List<User> getMutualFriends(int id, int friendId) {
-        return friendListDao.checkFriend(id).stream()
-                .filter(friendListDao.checkFriend(friendId)::contains)
+        return friendListDao.getFriends(id).stream()
+                .filter(friendListDao.getFriends(friendId)::contains)
                 .map(userStorage::getUserById)
                 .collect(Collectors.toList());
     }

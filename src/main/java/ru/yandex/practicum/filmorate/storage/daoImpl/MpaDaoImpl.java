@@ -31,7 +31,8 @@ public class MpaDaoImpl implements MpaDao {
     @Override
     public Mpa getMpaId(int id) {
         try {
-            return jdbcTemplate.queryForObject(format("SELECT * FROM mpa_ratings WHERE rating_id=%d", id), new MpaMapper());
+            return jdbcTemplate.queryForObject(format("SELECT * FROM mpa_ratings " +
+                    "WHERE rating_id=%d", id), new MpaMapper());
         } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }

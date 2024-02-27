@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,8 +21,6 @@ public class UserDbStorage implements UserStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
-
-    @Autowired
     private UserDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

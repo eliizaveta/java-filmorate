@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.storage.dao.GenreDao;
 public class GenreService {
     public final GenreDao genreDao;
 
-    @Autowired
     public GenreService(GenreDao genreDao) {
         this.genreDao = genreDao;
     }

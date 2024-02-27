@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.storage.daoImpl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +21,6 @@ import static java.lang.String.format;
 public class GenreDaoImpl implements GenreDao {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public GenreDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -40,7 +38,6 @@ public class GenreDaoImpl implements GenreDao {
     public List<Genre> getAllGenre() {
         return jdbcTemplate.query("SELECT * FROM genres ORDER BY genre_id", new GenreMapper());
     }
-
 
     public static class GenreMapper implements RowMapper<Genre> {
         @Override

@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.daoImpl;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +23,6 @@ import static java.lang.String.format;
 public class FriendListDaoImpl implements FriendListDao {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired
     public FriendListDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -40,7 +38,7 @@ public class FriendListDaoImpl implements FriendListDao {
     }
 
     @Override
-    public List<Integer> checkFriend(int id) {
+    public List<Integer> getFriends(int id) {
         try {
             return jdbcTemplate.query(format("SELECT from_user_id, to_user_id, boolean_status "
                             + "FROM user_friend_list WHERE to_user_id=%d", id), new FriendMapper())

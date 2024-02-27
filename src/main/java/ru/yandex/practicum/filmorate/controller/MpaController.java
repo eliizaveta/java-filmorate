@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,21 +15,19 @@ import java.util.List;
 public class MpaController {
     private final MpaService mpaService;
 
-
-    @Autowired
     public MpaController(MpaService mpaService) {
         this.mpaService = mpaService;
     }
 
     @GetMapping("/mpa")
     public List<Mpa> getAllMpa() {
-        log.info("вызван метод allMpa - запрос на список всех MPA");
+        log.info("Получим список всех MPA");
         return mpaService.mpaDao.getAllMpa();
     }
 
     @GetMapping("mpa/{id}")
     public Mpa getMpaId(@PathVariable int id) {
-        log.info("вызван метод getMpaId - запрос на MPA c ID " + id);
+        log.info("Получим MPA c id " + id);
         return mpaService.mpaDao.getMpaId(id);
     }
 }
