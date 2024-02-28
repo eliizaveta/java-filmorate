@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.storage.daoImpl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.dao.MpaDao;
@@ -17,14 +17,10 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-@Service
-@Component
+@Repository
+@RequiredArgsConstructor
 public class MpaDaoImpl implements MpaDao {
     private final JdbcTemplate jdbcTemplate;
-
-    public MpaDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public Mpa getMpaId(int id) {

@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,16 +14,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class FilmService {
+
     public final FilmStorage filmStorage;
     private final LikeDao likeDao;
     private final MpaDao mpaDao;
-
-    public FilmService(FilmStorage filmStorage, LikeDao likeDao, MpaDao mpaDao) {
-        this.filmStorage = filmStorage;
-        this.likeDao = likeDao;
-        this.mpaDao = mpaDao;
-    }
 
     public List<Film> getAllFilms() {
         List<Film> list = filmStorage.getAllFilms();

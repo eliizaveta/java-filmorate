@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.storage.daoImpl;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.storage.dao.LikeDao;
 
@@ -13,14 +13,11 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-@Service
-@Component
+@Repository
+@RequiredArgsConstructor
 public class LikeDaoImpl implements LikeDao {
-    private final JdbcTemplate jdbcTemplate;
 
-    public LikeDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void addLike(int filmId, int userId) {

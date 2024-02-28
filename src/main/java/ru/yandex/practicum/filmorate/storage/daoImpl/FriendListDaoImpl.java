@@ -1,12 +1,12 @@
 package ru.yandex.practicum.filmorate.storage.daoImpl;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.FriendList;
 import ru.yandex.practicum.filmorate.storage.dao.FriendListDao;
@@ -18,14 +18,11 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 
-@Service
-@Component
+@Repository
+@RequiredArgsConstructor
 public class FriendListDaoImpl implements FriendListDao {
-    private final JdbcTemplate jdbcTemplate;
 
-    public FriendListDaoImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public void addFriends(int id, int friendId, boolean status) {

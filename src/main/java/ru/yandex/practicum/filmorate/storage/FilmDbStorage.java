@@ -1,10 +1,13 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.server.ResponseStatusException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -12,6 +15,7 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.storage.daoImpl.GenreDaoImpl;
 
 import javax.validation.ValidationException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -22,13 +26,11 @@ import java.util.Set;
 
 import static java.lang.String.format;
 
-@Component
+@Repository
+@RequiredArgsConstructor
 public class FilmDbStorage implements FilmStorage {
-    private final JdbcTemplate jdbcTemplate;
 
-    public FilmDbStorage(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public List<Film> getAllFilms() {
@@ -85,9 +87,19 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public void addFilmGenres(int filmId, Set<Genre> genres) {
         if (genres != null) {
-            for (Genre genre : genres) {
-                jdbcTemplate.update("INSERT INTO film_genres (film_id, genre_id) VALUES (?, ?)", filmId, genre.getId());
-            }
+            final ArrayList<Genre> genreList = new ArrayList<>(genres);
+            jdbcTemplate.batchUpdate(
+                    "INSERT INTO film_genres (film_id, genre_id) VALUES (?, ?)",
+                    new BatchPreparedStatementSetter() {
+                        public void setValues(@NotNull PreparedStatement ps, int i) throws SQLException {
+                            ps.setLong(1, filmId);
+                            ps.setLong(2, genreList.get(i).getId());
+                        }
+                        public int getBatchSize() {
+                                return genreList.size();
+                            }
+                    }
+            );
         }
     }
 
