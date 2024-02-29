@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,36 +17,33 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @GetMapping("/users")
     public List getAllUsers() {
         log.info("Получим список всех пользователей");
-        return userService.userStorage.getAllUsers();
+        return userService.getAllUsers();
     }
 
     @GetMapping("/users/{id}")
     public User getUserId(@PathVariable Integer id) {
         log.info("Получим инфо о пользователе с id " + id);
-        return userService.userStorage.getUserById(id);
+        return userService.getUserById(id);
     }
 
     @PostMapping("/users")
     public User addUser(@Valid @RequestBody User user) {
         log.info("Добавим пользователя " + user);
-        return userService.userStorage.addUser(user);
+        return userService.addUser(user);
     }
 
     @PutMapping("/users")
     public User changeUser(@Valid @RequestBody User user) {
         log.info("Обновим инфо пользователя " + user);
-        return userService.userStorage.changeUser(user);
+        return userService.changeUser(user);
     }
 
     @PutMapping("/users/{id}/friends/{friendId}")
